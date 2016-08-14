@@ -1,4 +1,4 @@
-var getSchema = function (mongoose) {
+var getModel = function (mongoose) {
 	var userSchema = new mongoose.Schema({
 		username: { type: String, unique: true },
 		password: { type: String },
@@ -11,4 +11,4 @@ var getSchema = function (mongoose) {
 }
 
 
-exports.getSchema = getSchema;
+exports.getModel = getModel;

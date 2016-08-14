@@ -6,9 +6,10 @@ var mongoose = require('mongoose');
 var User = require('./config/UserSchema');
 var service = require('./api/controllers/service');
 var registerCtrl = require('./api/controllers/register');
+var loginCtrl = require('./api/controllers/login');
 
 var app = express();
-var UserSchema = User.getSchema(mongoose);
+var UserModel = User.getModel(mongoose);
 
 app.use(bodyParser.json());
 
@@ -21,8 +22,12 @@ var iniciar = function () {
 		service.exec(req, res);
 	});
 
+	app.post('/login', function(req, res) {
+		return loginCtrl.doPost(req, res, UserModel);
+	});
+
 	app.post('/register', function(req, res) {
-		return registerCtrl.doPost(req, res, UserSchema);
+		return registerCtrl.doPost(req, res, UserModel);
 	});
 
   	http.createServer(app).listen(8888);

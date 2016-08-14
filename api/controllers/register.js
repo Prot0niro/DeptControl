@@ -1,10 +1,10 @@
-var doPost = function(req, res, UserSchema) {
+var doPost = function(req, res, UserModel) {
 	var username = req.body.username;
 	var password = req.body.password;
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
 
-	var newUser = new UserSchema();
+	var newUser = new UserModel();
 	newUser.username = username;
 	newUser.password = password;
 	newUser.firstname = firstname;
@@ -15,11 +15,11 @@ var doPost = function(req, res, UserSchema) {
 		if (err) {
 			console.log('Error');
 			console.log(err);
-			return res.status(500).send();
+			return res.set('Content-Type', 'text/plain').status(500).send();
 		}
 
 		console.log('OK');
-		return res.status(201).send();
+		return res.set('Content-Type', 'text/plain').status(201).send();
 	});
 };
 
