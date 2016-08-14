@@ -1,13 +1,14 @@
 var http = require('http');
 var express = require('express');
-var url = require('url');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
-var UserSchema = require('./config/UserSchema');
+var User = require('./config/UserSchema');
 var service = require('./api/controllers/service');
 var registerCtrl = require('./api/controllers/register');
 
 var app = express();
+var UserSchema = User.getSchema(mongoose);
 
 app.use(bodyParser.json());
 
@@ -21,11 +22,14 @@ var iniciar = function () {
 	});
 
 	app.post('/register', function(req, res) {
-		registerCtrl.doPost(req, res, UserSchema);
+		return registerCtrl.doPost(req, res, UserSchema);
 	});
 
   	http.createServer(app).listen(8888);
   	console.log("Server started.");
 }
 
-iniciar();
+mongoose.connect('mongodb://localhost/test');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', iniciar);

@@ -15,11 +15,11 @@ var doPost = function(req, res, UserSchema) {
 		if (err) {
 			console.log('Error');
 			console.log(err);
-			res.status(500).send();
+			return res.status(500).send();
 		}
 
 		console.log('OK');
-		res.status(201).send();
+		return res.status(201).send();
 	});
 };
 
