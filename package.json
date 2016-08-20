@@ -1,0 +1,24 @@
+{
+  "name": "control-departamental",
+  "version": "0.0.9",
+  "description": "API server.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "TeleJedis",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TeleJedis/ControlDepartamental.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TeleJedis/ControlDepartamental/issues"
+  },
+  "homepage": "https://github.com/TeleJedis/ControlDepartamental",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.5.9"
+  }
+}
