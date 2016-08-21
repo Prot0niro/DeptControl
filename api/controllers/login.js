@@ -1,4 +1,6 @@
-var doPost = function(req, res, UserModel) {
+var authenticate = function(req, res, config) {
+	var UserModel = config.UserModel;
+
 	var username = req.body.username;
 	var password = req.body.password;
 
@@ -7,13 +9,12 @@ var doPost = function(req, res, UserModel) {
 		password: password
 	}
 
-	console.log('Searching for: ' + username)
 	UserModel.findOne(searchCriteria, function (err, user) {
-		return searchCallback(err, user, res);
+		return searchCallback(err, user, req, res, config);
 	});
 };
 
-var searchCallback = function (err, user, res) {
+var searchCallback = function (err, user, req, res, config) {
 	if (err) {
 		console.log(err);
 		return res.set('Content-Type', 'text/plain').status(500).send();
@@ -25,7 +26,19 @@ var searchCallback = function (err, user, res) {
 	}
 
 	console.log('Found');
-	return res.set('Content-Type', 'text/plain').status(200).send();
-}
+	var jwt = config.jwt;
 
-exports.doPost = doPost;
+	var token = jwt.sign(user, config.secret, {
+		expiresIn : 60*60*24
+	});
+
+	var responseJson = {
+		success: true,
+		message: 'Login correct',
+		token: token
+	};
+
+	return res.set('Content-Type', 'application/json').status(200).json(responseJson);
+};
+
+exports.authenticate = authenticate;

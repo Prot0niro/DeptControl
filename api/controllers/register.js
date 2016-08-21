@@ -1,16 +1,16 @@
-var doPost = function(req, res, UserModel) {
+var doPost = function(req, res, config) {
+	var UserModel = config.UserModel;
+
 	var username = req.body.username;
 	var password = req.body.password;
-	var firstname = req.body.firstname;
-	var lastname = req.body.lastname;
+	var admin = req.body.admin;
 
 	var newUser = new UserModel();
 	newUser.username = username;
 	newUser.password = password;
-	newUser.firstname = firstname;
-	newUser.lastname = lastname;
+	newUser.admin = admin;
 
-	console.log('Guardando');
+	console.log('Saving');
 	newUser.save(function (err, savedUSer) {
 		if (err) {
 			console.log('Error');

@@ -1,26 +1,27 @@
 var service = require('./../api/controllers/service');
 var registerCtrl = require('./../api/controllers/register');
 var loginCtrl = require('./../api/controllers/login');
+var securityCtrl = require('./../api/controllers/security');
 
-var User = require('./UserSchema');
-
-var doRoute = function (app, mongoose) {
-	var UserModel = User.getModel(mongoose);
-
+var doRoute = function (app, config) {
 	app.get('/', function (req, res) {
 		res.send('Hello World');
 	});
 
-	app.get('/service', function(req, res) {
+	app.all('/service/*', function(req, res, next) {
+		securityCtrl.ensureAuthenticated(config, req, res, next);
+	});
+
+	app.get('/service/test', function(req, res) {
 		service.exec(req, res);
 	});
 
-	app.post('/login', function(req, res) {
-		return loginCtrl.doPost(req, res, UserModel);
+	app.post('/register', function(req, res) {
+		return registerCtrl.doPost(req, res, config);
 	});
 
-	app.post('/register', function(req, res) {
-		return registerCtrl.doPost(req, res, UserModel);
+	app.post('/login', function (req, res) {
+		return loginCtrl.authenticate(req, res, config);
 	});
 }
 
