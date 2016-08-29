@@ -1,20 +1,20 @@
 {
-  "name": "control-departamental",
+  "name": "dept-control",
   "version": "0.0.9",
   "description": "API server.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "author": "TeleJedis",
+  "author": "Protonro",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TeleJedis/ControlDepartamental.git"
+    "url": "https://github.com/Protoniro/DeptControl.git"
   },
   "bugs": {
-    "url": "https://github.com/TeleJedis/ControlDepartamental/issues"
+    "url": "https://github.com/Protoniro/DeptControl/issues"
   },
-  "homepage": "https://github.com/TeleJedis/ControlDepartamental",
+  "homepage": "https://github.com/Protoniro/DeptControl",
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
