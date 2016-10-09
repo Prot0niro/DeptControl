@@ -4,6 +4,7 @@
   "description": "API server.",
   "main": "app.js",
   "scripts": {
+    "initMongo": "mongod",
     "start": "node app.js"
   },
   "author": "Protonro",

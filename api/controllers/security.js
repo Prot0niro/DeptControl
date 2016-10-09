@@ -1,19 +1,25 @@
-var ensureAuthenticated = function (config, req, res, next) {
-	var token = req.body.token || req.query.token || req.headers['x-access-token'];
+var securityCtrl = function (config) {
 	var jwt = config.jwt;
+	var services = {};
 
-	if (token) {
-		jwt.verify(token, config.secret, function(err, decoded) {
-			if (err) {
-				return res.set('Content-Type', 'text/plain').status(403).send();
-			}
+	services.ensureAuthenticated = function (req, res, next) {
+		var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-			req.decoded = decoded;
-			next();
-		});
-	} else {
-		return res.set('Content-Type', 'text/plain').status(403).send();
-	}
+		if (token) {
+			jwt.verify(token, config.secret, function(err, decoded) {
+				if (err) {
+					return res.set('Content-Type', 'text/plain').status(403).send();
+				}
+
+				req.decoded = decoded;
+				next();
+			});
+		} else {
+			return res.set('Content-Type', 'text/plain').status(403).send();
+		}
+	};
+
+	return services;
 };
 
-exports.ensureAuthenticated = ensureAuthenticated;
+module.exports = securityCtrl;
