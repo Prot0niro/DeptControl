@@ -1,44 +1,50 @@
-var authenticate = function(req, res, config) {
+var loginCtrl = function (config) {
 	var UserModel = config.UserModel;
-
-	var username = req.body.username;
-	var password = req.body.password;
-
-	var searchCriteria = {
-		username: username,
-		password: password
-	}
-
-	UserModel.findOne(searchCriteria, function (err, user) {
-		return searchCallback(err, user, req, res, config);
-	});
-};
-
-var searchCallback = function (err, user, req, res, config) {
-	if (err) {
-		console.log(err);
-		return res.set('Content-Type', 'text/plain').status(500).send();
-	};
-
-	if (!user) {
-		console.log('Not found');
-		return res.set('Content-Type', 'text/plain').status(404).send();
-	}
-
-	console.log('Found');
 	var jwt = config.jwt;
+	var secret = config.secret;
+	var services = {};
 
-	var token = jwt.sign(user, config.secret, {
-		expiresIn : 60*60*24
-	});
+	var searchCallback = function (err, user, req, res) {
+		if (err) {
+			console.log(err);
+			return res.set('Content-Type', 'text/plain').status(500).send();
+		};
 
-	var responseJson = {
-		success: true,
-		message: 'Login correct',
-		token: token
+		if (!user) {
+			console.log('Not found');
+			return res.set('Content-Type', 'text/plain').status(404).send();
+		}
+
+		console.log('Found');
+
+		var token = jwt.sign(user, secret, {
+			expiresIn : 60*60*24
+		});
+
+		var responseJson = {
+			success: true,
+			message: 'Login correct',
+			token: token
+		};
+
+		return res.set('Content-Type', 'application/json').status(200).json(responseJson);
 	};
 
-	return res.set('Content-Type', 'application/json').status(200).json(responseJson);
+	services.authenticate =function(req, res) {
+		var username = req.body.username;
+		var password = req.body.password;
+
+		var searchCriteria = {
+			username: username,
+			password: password
+		}
+
+		UserModel.findOne(searchCriteria, function (err, user) {
+			return searchCallback(err, user, req, res);
+		});
+	};
+
+	return services;
 };
 
-exports.authenticate = authenticate;
+module.exports = loginCtrl;
